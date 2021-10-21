@@ -8,7 +8,7 @@ import { UsersService } from './users.service';
 
 @UseInterceptors(UndefinedToNullInterceptor)
 @ApiTags('USER')
-@Controller('users')
+@Controller('api/users')
 export class UsersController {
     constructor(private usersService: UsersService) {}
 
@@ -29,8 +29,8 @@ export class UsersController {
 
     @ApiOperation({ summary: '회원가입' })
     @Post()
-    postUsers(@Body() data: JoinRequestDto) {
-        this.usersService.postUsers(data.email, data.nickname, data.password)
+    postUsers(@Body() body: JoinRequestDto) {
+        this.usersService.join(body.email, body.nickname, body.password)
     }
 
     @ApiResponse({
