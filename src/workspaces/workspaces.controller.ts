@@ -1,45 +1,64 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiCookieAuth, ApiOperation} from '@nestjs/swagger';
+import { LoggedInGuard } from 'src/auth/logged-in.guard';
 import { User } from 'src/common/decorators/user.decorator';
 import { Users } from 'src/entities/Users';
 import { CreateWorkspaceDto } from 'src/users/dto/create-workspace.dto';
 import { WorkspacesService } from './workspaces.service';
 
-@ApiTags('WORKSPACE')
+@ApiTags('WORKSPACES')
+@ApiCookieAuth('connect.sid')
+@UseGuards(LoggedInGuard)
 @Controller('api/workspaces')
 export class WorkspacesController {
-    constructor(
-        private workspacesService: WorkspacesService
-    ) {
+  constructor(private workspacesService: WorkspacesService) {}
 
-    }
-    @Get()
-    getMyWorkspaces(@User() user: Users) {
-        return this.workspacesService.findMyWorkspaces(user.id)
-    }
+  @ApiOperation({ summary: '내 워크스페이스 가져오기' })
+  @Get()
+  async getMyWorkspaces(@User() user: Users) {
+    return this.workspacesService.findMyWorkspaces(user.id);
+  }
 
-    @Post()
-    createWorkspace(@User() user: Users, @Body() body: CreateWorkspaceDto) {
+  @ApiOperation({ summary: '워크스페이스 만들기' })
+  @Post()
+  async createWorkspace(@User() user: Users, @Body() body: CreateWorkspaceDto) {
+    return this.workspacesService.createWorkspace(
+      body.workspace,
+      body.url,
+      user.id,
+    );
+  }
 
-    }
+  @ApiOperation({ summary: '워크스페이스 멤버 가져오기' })
+  @Get(':url/members')
+  async getWorkspaceMembers(@Param('url') url: string) {
+    return this.workspacesService.getWorkspaceMembers(url);
+  }
 
-    @Get(':url/members')
-    getAllMembersFromWorkspace(@Param() url: string) {
-        return this.workspacesService.getWorkspaceMembers(url)
-    }
+  @ApiOperation({ summary: '워크스페이스 멤버 초대하기' })
+  @Post(':url/members')
+  async createWorkspaceMembers(
+    @Param('url') url: string,
+    @Body('email') email,
+  ) {
+    return this.workspacesService.createWorkspaceMembers(url, email);
+  }
 
-    @Post(':url/members')
-    inviteMembersToWorkspace() {
+  @ApiOperation({ summary: '워크스페이스 특정멤버 가져오기' })
+  @Get(':url/members/:id')
+  async getWorkspaceMember(
+    @Param('url') url: string,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.workspacesService.getWorkspaceMember(url, id);
+  }
 
-    }
-
-    @Delete(':url/members/:id')
-    kickMemberFromWorkspace() {
-
-    }
-
-    @Get(':url/members/:id')
-    getMemberInfoInWorkspace() {
-
-    }
+  @ApiOperation({ summary: '워크스페이스 특정멤버 가져오기' })
+  @Get(':url/users/:id')
+  async getWorkspaceUser(
+    @Param('url') url: string,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.workspacesService.getWorkspaceMember(url, id);
+  }
 }
