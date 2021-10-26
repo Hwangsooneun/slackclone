@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import passport from 'passport'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { HttpExceptionFilter } from './httpException.filter';
+import { HttpExceptionFilter } from './http-exception.filter';
 import { ValidationPipe } from '@nestjs/common';
 
 declare const module: any;

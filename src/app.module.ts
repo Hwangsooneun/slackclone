@@ -12,6 +12,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import * as ormconfig from '../ormconfig'
 import { Users } from './entities/Users';
 import { AuthModule } from './auth/auth.module';
+import { EventsModule } from './events/events.module';
+import { EventsGateway } from './events.gateway';
 
 @Module({
   imports: [
@@ -24,10 +26,11 @@ import { AuthModule } from './auth/auth.module';
     ChannelsModule, 
     DmsModule,
     TypeOrmModule.forRoot(ormconfig),
-    TypeOrmModule.forFeature([Users])
+    TypeOrmModule.forFeature([Users]),
+    EventsModule
   ],
   controllers: [AppController],
-  providers: [AppService, UsersService],
+  providers: [AppService, UsersService, EventsGateway],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {
