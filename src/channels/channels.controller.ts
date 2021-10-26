@@ -1,8 +1,20 @@
-import { Controller, Get, Param, Post, Query, Body } from '@nestjs/common';
+import { Controller, Get, Param, Post, Query, Body, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 import { User } from 'src/common/decorators/user.decorator';
 import { PostChatDto } from 'src/common/dto/post-chat.dto';
 import { ChannelsService } from './channels.service';
+import fs from 'fs';
+import multer from 'multer';
+import path from 'path';
+import { Users } from 'src/entities/Users';
+
+try {
+    fs.readdirSync('uploads');
+} catch (error) {
+    console.error('uploads 폴더가 없어 uploads 폴더를 생성합니다.')
+    fs.mkdirSync('uploads')
+}
 
 @ApiTags('CHANNEL')
 @Controller('api/workspaces/:url/channels')
@@ -47,12 +59,36 @@ export class ChannelsController {
         @Body() body: PostChatDto,
         @User() user,
         ) {
-        return this.channelsService.postChat({ url, content: body.content, name, myId: user.id })
+        return this.channelsService.createWorkspaceChannelChats(
+            url,
+            name,
+            body.content,
+            user.id
+        )
     }
 
+    @UseInterceptors(
+        FilesInterceptor('image', 10, {
+            storage: multer.diskStorage({
+                destination(req, file, cb) {
+                    cb(null, 'uploads/');
+                },
+                filename(req, file, cb) {
+                    const ext = path.extname(file.originalname);
+                    cb(null, path.basename(file.originalname, ext) + Date.now() + ext);
+                }
+            }),
+            limits: { fileSize: 5 * 1024 * 1024 }, 
+        })
+    )
     @Post(':name/images')
-    postImages(@Body() body) {
-        // return this.channelsService.
+    postImages(
+        @UploadedFile() files: Express.Multer.File[],
+        @Param('url') url: string,
+        @Param('name') name: string,
+        @User() user
+    ) {
+        return this.channelsService.createWorkspaceChannelImages(url, name, files, user.id)
     }
 
     @Get(':name/unreads')

@@ -33,7 +33,6 @@ export class UsersService {
                 nickname,
                 password: hashedPassword
             });
-            throw new Error('롤백?')
             const workspaceMember = queryRunner.manager.getRepository(WorkspaceMembers).create();
             workspaceMember.UserId = returned.id;
             workspaceMember.WorkspaceId = 1

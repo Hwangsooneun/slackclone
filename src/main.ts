@@ -6,14 +6,25 @@ import passport from 'passport'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { HttpExceptionFilter } from './http-exception.filter';
 import { ValidationPipe } from '@nestjs/common';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import path from 'path'
 
 declare const module: any;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const port = process.env.PORT || 3095;
-  app.useGlobalPipes(new ValidationPipe())
   app.useGlobalFilters(new HttpExceptionFilter())
+  app.useGlobalPipes(new ValidationPipe({
+    transform: true,
+  }))
+  app.enableCors({
+    origin: true,
+    credentials: true,
+  })
+  app.useStaticAssets(path.join(__dirname, '..', 'uploads'), {
+    prefix: '/uploads'
+  })
   const config = new DocumentBuilder()
     .setTitle('Sleact API')
     .setDescription('Sleact 개발을 위한 API 문서입니다.')
