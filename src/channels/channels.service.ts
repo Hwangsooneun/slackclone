@@ -1,13 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { createQuery } from 'mysql2/typings/mysql/lib/Connection';
 import { ChannelChats } from 'src/entities/ChannelChats';
 import { ChannelMembers } from 'src/entities/ChannelMembers';
 import { Channels } from 'src/entities/Channels';
 import { Users } from 'src/entities/Users';
 import { Workspaces } from 'src/entities/Workspaces';
 import { EventsGateway } from 'src/events/events.gateway';
-import { createQueryBuilder, MoreThan, Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 
 @Injectable()
 export class ChannelsService {
@@ -184,7 +183,6 @@ export class ChannelsService {
         relations: ['User', 'Channel'],
       });
       this.eventsGateway.server
-        // .of(`/ws-${url}`)
         .to(`/ws-${url}-${chatWithUser.ChannelId}`)
         .emit('message', chatWithUser);
     }

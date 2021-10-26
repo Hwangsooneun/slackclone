@@ -59,7 +59,7 @@ export class WorkspacesService {
         return this.usersRepository
             .createQueryBuilder('user')
             .innerJoin('user.WorkspaceMembers', 'members')
-            .innerJoin('member.Workspace', 'workspaces', 'workspaces.url = :url', { url })
+            .innerJoin('members.Workspace', 'workspaces', 'workspaces.url = :url', { url })
             .getMany()
     }
 
