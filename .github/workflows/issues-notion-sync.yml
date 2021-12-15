@@ -1,0 +1,30 @@
+name: Notion Sync
+
+on:
+  workflow_dispatch:
+  issues:
+    types:
+      [
+        opened,
+        edited,
+        labeled,
+        unlabeled,
+        assigned,
+        unassigned,
+        milestoned,
+        demilestoned,
+        reopened,
+        closed,
+      ]
+
+jobs:
+  notion_job:
+    runs-on: ubuntu-latest
+    name: Add GitHub Issues to Notion
+    steps:
+      - name: Add GitHub Issues to Notion
+        uses: instantish/notion-github-action@v1.2.0
+        with:
+          notion-token: secret_LiDDIMsEPHx7HZOkQbJ9ublGeeFY32PLzq8wXACtFye
+          notion-db: 5bda6738ab8d43edb0f470085805856e
+          github-token: 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
