@@ -20,5 +20,3 @@ jobs:
             NOTION_API_KEY: secret_LiDDIMsEPHx7HZOkQbJ9ublGeeFY32PLzq8wXACtFye
             # Your Notion database ID
             NOTION_DATABASE: 3aac3868d4b94d38be48a3d7e6009bc5
-            # The ID of the page that contains your database
-            NOTION_PAGE_ID: 474d5a4b769e40419258246eb698c1e8
