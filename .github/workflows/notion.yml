@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Notion Board
-        uses: Souvikns/Notion-Board@latest
+        uses: Souvikns/Notion-Board@v2.0.2
         env: 
           GITHUB_TOKEN: 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
           NOTION_API_KEY: secret_LiDDIMsEPHx7HZOkQbJ9ublGeeFY32PLzq8wXACtFye
