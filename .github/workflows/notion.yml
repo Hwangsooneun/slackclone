@@ -26,5 +26,5 @@ jobs:
         uses: instantish/notion-github-action@v1.2.0
         with:
           notion-token: ${{ secrets.NOTION_TOKEN }}
-          notion-db: 5bda6738ab8d43edb0f470085805856e
+          notion-db: 3aac3868d4b94d38be48a3d7e6009bc5
           github-token: ${{ secrets.GITHUB_TOKEN }}
