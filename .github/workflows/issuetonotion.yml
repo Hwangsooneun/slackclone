@@ -1,0 +1,14 @@
+name: issue_to_notion_card
+on:
+  issues:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Notion Card Creator
+        uses: zoi-aoba/issue-to-notion@v1.1.1
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          DATABASE_URL: 3aac3868d4b94d38be48a3d7e6009bc5
+          PROPERTY_NAME : state
