@@ -27,4 +27,3 @@ jobs:
         with:
           notion-token: ${{ secrets.NOTION_TOKEN }}
           notion-db: 3aac3868d4b94d38be48a3d7e6009bc5
-          github-token: ${{ secrets.GITHUB_TOKEN }}
