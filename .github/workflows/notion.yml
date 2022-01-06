@@ -23,7 +23,7 @@ jobs:
     name: Add GitHub Issues to Notion
     steps:
       - name: Add GitHub Issues to Notion
-        uses: Hwangsooneun/notion-github-action@v1.1.4
+        uses: Hwangsooneun/notion-github-action@v1.1.5
         with:
           notion-token: ${{ secrets.NOTION_TOKEN }}
           notion-db: 3aac3868d4b94d38be48a3d7e6009bc5
